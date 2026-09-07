@@ -34,7 +34,14 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        @auth
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('blog2') }}">จัดการบทความ</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('create') }}">เขียนบทความ</a>
+                            </li>
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -60,8 +67,10 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/create">เขียนบทความ </a>
-                                    <a class="dropdown-item" href="/blog2">จัดการบทความ </a>
+                                    <a class="dropdown-item" href="{{ route('create') }}">เขียนบทความ</a>
+                                    <a class="dropdown-item" href="{{ route('blog2') }}">จัดการบทความ</a>
+                                    <a class="dropdown-item" href="{{ route('about2') }}">เกี่ยวกับเรา</a>
+                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

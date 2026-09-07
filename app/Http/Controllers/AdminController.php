@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Blog;
 
 class AdminController extends Controller
 
@@ -13,7 +14,7 @@ class AdminController extends Controller
         $this->middleware('auth');
     }
     function blog2() {
-    $blog2 = DB::table("blogs")->paginate(5);
+    $blog2 = Blog::paginate(10);
     return view("blog2", compact("blog2"));
     }
     function about2(){
@@ -44,16 +45,16 @@ class AdminController extends Controller
             'updated_at' => now(),
         ];
 
-        DB::table('blogs')->insert($data);
+        Blog::insert($data);
 
         return redirect()->route('blog2')->with('success', 'บันทึกบทความเรียบร้อยแล้ว');
     }
     function delete($id){
-        DB::table('blogs')->where('id', $id)->delete();
-        return redirect()->route('blog2')->with('success', 'ลบบทความเรียบร้อยแล้ว');
+        Blog::find($id)->delete();
+        return redirect()->back();
     }
     function chang($id){
-       $blog = (DB::table("blogs")->where('id',$id)->first());
+       $blog = Blog::find($id);
        $data=['status'=>$blog->status];
        if($blog->status ==1){
 
@@ -61,11 +62,11 @@ class AdminController extends Controller
     }else{
         $data=['status'=>1];
     }
-       DB::table('blogs')->where('id',$id)->update($data);
-      return redirect('/blog2');
+       Blog::find($id)->update($data);
+       return redirect()->back();
     }
     function edit($id){
-       $blog = (DB::table("blogs")->where('id',$id)->first());
+       $blog = Blog::find($id);
         return view('edit',compact('blog'));
     }
     function update(Request $request,$id){
@@ -82,7 +83,7 @@ class AdminController extends Controller
             'title' => $request->title,
             'content' => $request->content,
         ];
-        DB::table('blogs')->where('id',$id)->update($data);
-        return redirect('/blog2');
-}
+        Blog::find($id)->update($data);
+        return redirect()->route('blog2')->with('success', 'อัปเดตบทความเรียบร้อยแล้ว');
+    }
 }
